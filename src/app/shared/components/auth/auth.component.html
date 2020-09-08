@@ -1,0 +1,21 @@
+<div class="wrapper">
+    <div class="logo"></div>
+
+    <h1 class="name">Online Judge</h1>
+
+    <div class="separator">
+        <div class="star1"></div>
+        <div class="star2"></div>
+    </div>
+
+    <mat-card class="formCard">
+        <mat-tab-group mat-stretch-tabs backgroundColor="primary" dynamicHeight="true" [(selectedIndex)]="selectedIndex">
+        <mat-tab label="Login">
+            <app-login></app-login>
+        </mat-tab>
+        <mat-tab label="Register">
+            <app-register (successfulRegistration)="readyLogin($event)"></app-register>
+        </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</div>

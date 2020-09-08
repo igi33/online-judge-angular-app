@@ -1,0 +1,83 @@
+mat-toolbar {
+    padding-left: 0px;
+    padding-right: 0px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 3;
+}
+
+mat-toolbar > mat-icon {
+    margin-right: 20px;
+}
+
+.logo {
+    width: 36px;
+    height: 36px;
+    background-image: url('/assets/images/logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 30px;
+    margin-right: 25px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.userButton {
+    margin-left: 30px;
+    padding-right: 0;
+    margin-right: 16px;
+}
+
+.userButton h3 {
+    display: inline;
+    font-size: 15px;
+    margin: 0px 16px;
+}
+
+.avatar {
+    display: inline-block;
+    background-image: url('/assets/images/avatar0.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+    padding-top: 64px;
+}
+
+.sidenav-inner {
+    padding-top: 64px;
+    overflow: hidden;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.sidenav-inner > a, .menuButton {
+    display: block;
+    min-width: auto;
+    padding: 20px;
+    border-radius: 0;
+}
+
+.active-link {
+    background-color: #3f51b5;
+    color: rgb(255, 255, 255);
+}
+
+.sidenav-content {
+    padding: 40px;
+    box-sizing: border-box;
+}

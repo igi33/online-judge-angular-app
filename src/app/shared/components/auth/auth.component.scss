@@ -1,0 +1,81 @@
+.wrapper {
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #2964bc;
+
+    background-image: url('../../../../assets/images/synth-background_light.jpg');
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: top;
+
+    z-index: -1;
+}
+
+.formCard {
+    max-width: 400px;
+    margin: 10px;
+    margin-bottom: 50px;
+}
+
+mat-card {
+    padding: 0;
+}
+
+h1 {
+    color: #eee;
+    font-weight: 300;
+    font-size: 2em;
+    text-align: center;
+    letter-spacing: 0.05em;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.separator {
+    width: 300px;
+    margin: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.name {
+    font-family: Kano !important;
+}
+
+.star1, .star2 {
+    position: absolute;
+    bottom: -2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.star2 {
+    right: 0px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+
+    background-image: url('../../../../assets/images/logo.svg');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 5px solid #eee;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+h2 {
+    color: #eee;
+    text-align: center;
+    font-weight: 400;
+    text-transform: uppercase;
+}

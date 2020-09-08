@@ -1,4 +1,4 @@
-import { ComputerLanguage } from "./computerlanguage";
+import { ComputerLanguage } from "./computer-language";
 import { User } from "./user";
 import { Task } from "./task";
 

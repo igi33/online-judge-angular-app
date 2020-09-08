@@ -1,0 +1,43 @@
+<mat-button-toggle mat-raised-button (click)="sideNavOpen = !sideNavOpen" class="btn-tag-toggle" [checked]="sideNavOpen" color="primary">Show Tags</mat-button-toggle>
+
+<mat-sidenav-container class="main-container">
+    <mat-sidenav [mode]="mode" position="end" [opened]="sideNavOpen" #tagsPanel class="tags">
+        <div class="tags-separator"></div>
+        <div id="tag-container">
+            <mat-card (click)="setTag(0)" class="card-tag{{ 0 == tagId ? ' selected' : '' }}">All</mat-card>
+            <mat-card (click)="setTag(tag.id)" *ngFor="let tag of tags" class="card-tag{{ tag.id == tagId ? ' selected' : '' }}">{{ tag.name }}</mat-card>
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" (scrolled)="loadMoreTasks()">
+        <div class="tasks-wrapper">
+            <mat-card *ngFor="let task of tasks" class="task-info">
+                <mat-card-content class="content">
+                    <div class="info">
+                        <h3 class="task-name">{{task.name}}</h3>
+                        <div class="date">
+                            <mat-icon>access_time</mat-icon>
+                            <span>{{this.getDate(task.timeSubmitted) | date:'mediumDate'}}</span>
+                            <span class="timeDate">{{this.getDate(task.timeSubmitted) | date:'HH:mm'}}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="actions">
+                    <a mat-button [routerLink]="['/profile', task.user.id]" class="creator">
+                        <img class="avatar" src="/assets/images/avatar{{task.user.id % 8}}.svg">
+                        <span>{{task.user.username}}</span>
+                    </a>
+                    <a class="view-task" mat-button [routerLink]="['/task', task.id]">View Task</a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        
+            
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<button mat-fab color="primary" class="fab-task-form" style="right: {{ sideNavOpen ? '340' : '30' }}px;" [routerLink]="['/task-form']" aria-label="Add a new task">
+    <mat-icon>add</mat-icon>
+</button>

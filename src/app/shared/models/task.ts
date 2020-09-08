@@ -1,5 +1,5 @@
 import { User } from "./User";
-import { TestCase } from "./testcase";
+import { TestCase } from "./test-case";
 import { Tag } from "./tag";
 
 export class Task {

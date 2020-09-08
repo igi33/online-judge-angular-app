@@ -1,0 +1,153 @@
+$color-primary: #3f51b5;
+
+.main-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+}
+
+.main-content {
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.tasks-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h3, h2 {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 20px;
+    font-weight: 400;
+    font-size: 1.3em;
+    color: #333;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 2em;
+    color: #333;
+    border-bottom: none;
+}
+
+.task-info {
+    width: 290px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.task-info h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 8px;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+}
+
+.date mat-icon {
+    margin: 0 10px;
+}
+
+.timeDate {
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+.content {
+    margin-bottom: 10px;
+}
+
+.separator {
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    margin-bottom: 7px;
+}
+
+.task-name {
+    font-weight: 500;
+    padding: 0 10px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #eee;
+    padding: 8px 0 !important;
+}
+
+a.view-task {
+    text-transform: uppercase;
+    margin-right: 16px;
+}
+
+.actions .creator {
+    margin-left: 16px;
+}
+
+.avatar {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+/* Tags */
+
+.btn-tag-toggle {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 10;
+}
+
+.tags {
+    background-color: #eee;
+    padding: 20px;
+    width: 300px;
+}
+
+.tags-separator {
+    width: 1px;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 0px;
+    background-color: #ddd;
+}
+
+#tag-container {
+    margin-top: 60px;
+}
+
+.card-tag {
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: $color-primary;
+    color: #ffffff;
+}
+
+/* FAB */
+
+.fab-task-form {
+    position: fixed;
+    bottom: 30px;
+    z-index: 11;
+}

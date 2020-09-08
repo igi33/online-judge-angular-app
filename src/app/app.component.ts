@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from './services/task.service';
-import { Task } from './models/Task';
-import { first } from 'rxjs/operators';
+
+import { AlertService } from './core/services/alert.service';
+import { AuthenticationService } from './core/services/authentication.service';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -9,17 +11,22 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'online-judge-angular-app';
-  tasks: Task[] = [];
-
   constructor(
-    private taskService: TaskService,
+    private alertService: AlertService,
+    public snackBar: MatSnackBar,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
-    this.taskService.getTasks(0, 0).pipe(first()).subscribe(tasks => {
-      this.tasks = tasks;
+    this.alertService.subject.subscribe(message => {
+      if (message) {
+        const dur = message.type === 'error' ? 7500 : 5000;
+        this.snackBar.open(message.text, null, {
+          duration: dur,
+        });
+      }
     });
+    this.authService.initToken();
   }
 
 }
