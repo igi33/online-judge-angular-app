@@ -13,7 +13,7 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-        <a mat-menu-item [routerLink]="['/auth']">
+        <a mat-menu-item [routerLink]="['/profile', currentUser.id]">
             <mat-icon>face</mat-icon>
             <span>My Profile</span>
         </a>

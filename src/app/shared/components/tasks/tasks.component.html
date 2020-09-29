@@ -14,7 +14,7 @@
             <mat-card *ngFor="let task of tasks" class="task-info">
                 <mat-card-content class="content">
                     <div class="info">
-                        <h3 class="task-name">{{task.name}}</h3>
+                        <h3 class="task-name"><a [routerLink]="['/task', task.id]">{{task.name}}</a></h3>
                         <div class="date">
                             <mat-icon>access_time</mat-icon>
                             <span>{{this.getDate(task.timeSubmitted) | date:'mediumDate'}}</span>

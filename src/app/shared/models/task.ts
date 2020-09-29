@@ -6,11 +6,11 @@ export class Task {
     id: number;
     name: string;
     description: string;
-    memorylimit: number;
-    timelimit: number;
-    timesubmitted: any;
+    memoryLimit: number;
+    timeLimit: number;
+    timeSubmitted: any;
     origin: string;
     user: User;
-    testcases: TestCase[];
+    testCases: TestCase[];
     tags: Tag[];
 }

@@ -5,6 +5,7 @@ import { TasksComponent } from './shared/components/tasks/tasks.component';
 import { AuthComponent } from './shared/components/auth/auth.component';
 
 import { AuthGuard } from './core/services/auth.guard';
+import { ProfileComponent } from './shared/components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'tasks', pathMatch: 'full' },
       { path: 'tasks', component: TasksComponent },
+      { path: 'profile/:id', component: ProfileComponent, pathMatch: 'full' },
     ],
   },
   { path: 'auth', component: AuthComponent },

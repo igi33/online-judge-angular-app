@@ -2,6 +2,6 @@ export class User {
     id: number;
     username: string;
     email: string;
-    timeregistered: any;
+    timeRegistered: any;
     token: string;
 }

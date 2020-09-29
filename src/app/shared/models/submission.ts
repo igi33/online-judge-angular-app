@@ -4,14 +4,14 @@ import { Task } from "./task";
 
 export class Submission {
     id: number;
-    timesubmitted: any;
+    timeSubmitted: any;
     sourcecode: string;
     status: string;
     message: string;
-    executiontime: number;
-    executionmemory: number;
+    executionTime: number;
+    executionMemory: number;
     user: User;
     task: Task;
-    langid: number;
-    computerlanguage: ComputerLanguage;
+    langId: number;
+    computerLanguage: ComputerLanguage;
 }

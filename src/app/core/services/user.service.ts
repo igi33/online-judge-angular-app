@@ -18,11 +18,6 @@ export class UserService {
     return this.http.get<User>(`/api/user/${id}`);
   }
 
-  /*
-  authenticateUser(userCredentials: any): Observable<User> {
-    return this.http.post<User>(`/api/user/authenticate`, userCredentials);
-  }
-  */
   postUser(user: User): Observable<User> {
     return this.http.post<User>(`/api/user`, user);
   }

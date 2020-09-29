@@ -82,6 +82,11 @@ h2 {
     padding: 0 10px;
 }
 
+.task-name a {
+    color: #000;
+    text-decoration: none;
+}
+
 .actions {
     display: flex;
     justify-content: space-between;
