@@ -10,11 +10,10 @@ import { User } from '../../models/user';
 export class LayoutComponent implements OnInit {
   currentUser: User;
 
-  constructor(private authenticationService: AuthenticationService) {
-    this.currentUser = this.authenticationService.getCurrentUser();
-  }
+  constructor(private authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
+    this.currentUser = this.authenticationService.getCurrentUser();
   }
 
 }

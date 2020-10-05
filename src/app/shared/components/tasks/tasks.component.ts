@@ -60,10 +60,8 @@ export class TasksComponent implements OnInit {
       this.page = 1;
       this.tasks = [];
     }
-    this.taskService.getTasks(this.tagId, this.pageSize, (this.page - 1)*this.pageSize)
+    this.taskService.getTasks(this.tagId/*, this.pageSize, (this.page - 1)*this.pageSize*/)
       .pipe(first()).subscribe(tasks => {
-        console.log(tasks);
-        // check if there is more data, if not snackbar
         if (tasks.length > 0) {
           ++this.page;
           for (let t of tasks) {

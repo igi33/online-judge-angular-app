@@ -1,0 +1,52 @@
+<mat-button-toggle mat-raised-button (click)="sideNavOpen = !sideNavOpen" class="btn-best-solutions-toggle" [checked]="sideNavOpen" color="primary">Toggle Best Solutions</mat-button-toggle>
+
+<mat-sidenav-container class="container">
+    <mat-sidenav [mode]="mode" position="end" [opened]="sideNavOpen" #bestSolutionsPanel class="best-solutions">
+        <div class="best-solutions-separator"></div>
+        <h2>Best Solutions</h2>
+        <p *ngIf="!bestSolutions.length">No one has solved this task yet!</p>
+        <mat-list role="list" *ngIf="bestSolutions.length">
+            <mat-list-item *ngFor="let sol of bestSolutions; index as i" role="listitem">{{ i+1 }}. {{ sol.user.username }} {{ sol.executionTime / 1000.0 }} s</mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
+      <mat-card *ngIf="task">
+
+        <h1>{{task.name}}</h1>
+        <h2 *ngIf="task.tags.length"><ng-container *ngFor="let tag of task.tags; index as i">{{tag.name}}{{i != task.tags.length-1 ? ', ' : ''}}</ng-container></h2>
+      
+        <p class="desc">{{task.description}}</p>
+
+        <h3>Time limit: {{task.timeLimit / 1000.0}} s</h3>
+        <h3>Memory limit: {{task.timeLimit / 1024.0 / 1024.0}} MiB</h3>
+        <h3>Submitted by: <a mat-button [routerLink]="['/profile', task.user.id]">{{task.user.username}}</a></h3>
+        <h3 *ngIf="task.origin">Task source: {{!validURL(task.origin) ? task.origin : ''}}<a *ngIf="validURL(task.origin)" target="_blank" href="{{task.origin}}">{{task.origin}}</a></h3>
+      
+        <div id="task-submit-form">
+          <h2>Submit solution</h2>
+          <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+              <mat-form-field>
+                <mat-label>Computer language</mat-label>
+                <mat-select formControlName="lang_id">
+                  <mat-option [value]="lang.id" *ngFor="let lang of computerLanguages">{{lang.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Source code</mat-label>
+                <textarea matInput formControlName="source_code" class="source-code"></textarea>
+              </mat-form-field>
+              
+              <div class="submit-button-container">
+                <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid"><mat-icon>code</mat-icon> Submit</button>
+              </div>
+            </form>
+      </div>
+
+    </mat-card>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<button *ngIf="task && currentUser && task.user.id == currentUser.id" mat-fab color="primary" class="fab-task-form" style="right: {{ sideNavOpen ? '340' : '30' }}px;" [routerLink]="['/task-form']" aria-label="Edit task">
+  <mat-icon>create</mat-icon>
+</button>

@@ -28,8 +28,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   displayedSolvedTasksColumns: string[] = ['name', 'timeLimit', 'memoryLimit', 'user.username', 'timeSubmitted'];
   solvedTasksDataSource: MatTableDataSource<Task> = new MatTableDataSource([]);
-  @ViewChild('submissionPaginator') solvedTasksPaginator: MatPaginator;
-  @ViewChild('submissionTable') solvedTasksSort: MatSort;
+  @ViewChild('solvedTasksPaginator') solvedTasksPaginator: MatPaginator;
+  @ViewChild('solvedTasksTable') solvedTasksSort: MatSort;
   
   constructor(
     private route: ActivatedRoute,

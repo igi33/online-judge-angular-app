@@ -11,6 +11,6 @@ export class ComputerLanguageService {
   constructor(private http: HttpClient) { }
 
   getComputerLanguages(): Observable<ComputerLanguage[]> {
-    return this.http.get<ComputerLanguage[]>(`/api/user`);
+    return this.http.get<ComputerLanguage[]>(`/api/computerlanguage`);
   }
 }

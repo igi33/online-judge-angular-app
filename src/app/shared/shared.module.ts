@@ -17,6 +17,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { SubmissionsComponent } from './components/submissions/submissions.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     TaskFormComponent,
     SubmissionsComponent,
     ProfileComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,

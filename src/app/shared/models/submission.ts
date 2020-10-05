@@ -5,7 +5,7 @@ import { Task } from "./task";
 export class Submission {
     id: number;
     timeSubmitted: any;
-    sourcecode: string;
+    sourceCode: string;
     status: string;
     message: string;
     executionTime: number;
@@ -14,4 +14,8 @@ export class Submission {
     task: Task;
     langId: number;
     computerLanguage: ComputerLanguage;
+
+    public constructor(init?: Partial<Submission>) {
+        Object.assign(this, init);
+    }
 }

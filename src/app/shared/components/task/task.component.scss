@@ -1,0 +1,142 @@
+.container {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.best-solutions {
+    background-color: #eee;
+    padding: 80px 20px 20px;
+    width: 300px;
+}
+
+.best-solutions-separator {
+    width: 1px;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 0px;
+    background-color: #ddd;
+}
+
+/* FAB */
+
+.fab-task-form {
+    position: fixed;
+    bottom: 30px;
+    z-index: 11;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-card {
+    padding: 80px 100px;
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-bottom: 7px;
+}
+
+h3.qHeader {
+    margin-bottom: 40px;
+}
+
+p.desc {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+#task-submit-form {
+    margin-top: 50px;
+}
+
+mat-form-field {
+    display: block;
+}
+
+textarea.source-code {
+    width: 100%;
+    height: 300px;
+    font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+
+ul {
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.question {
+    display: flex;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.question .content {
+    text-align: justify;
+}
+
+.index {
+    font-weight: bold;
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+
+.answerRadioCheck {
+    display: flex;
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+.textInput {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 20px;
+}
+
+mat-checkbox {
+    margin-right: 10px;
+}
+
+button {
+    text-transform: uppercase;
+}
+
+.submit-button-container {
+    text-align: center;
+}
+
+.btn-best-solutions-toggle {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 10;
+}
