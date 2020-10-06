@@ -8,6 +8,7 @@ import { AuthGuard } from './core/services/auth.guard';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { TaskComponent } from './shared/components/task/task.component';
 import { SubmissionsComponent } from './shared/components/submissions/submissions.component';
+import { TaskFormComponent } from './shared/components/task-form/task-form.component';
 
 const routes: Routes = [
   {
@@ -16,9 +17,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'tasks', pathMatch: 'full' },
+      { path: 'tasks/new', component: TaskFormComponent },
       { path: 'tasks', component: TasksComponent },
-      { path: 'submissions', component: SubmissionsComponent },
+      { path: 'task/:id/edit', component: TaskFormComponent, pathMatch: 'full' },
       { path: 'task/:id', component: TaskComponent, pathMatch: 'full' },
+      { path: 'submissions', component: SubmissionsComponent },
       { path: 'profile/:id', component: ProfileComponent, pathMatch: 'full' },
     ],
   },

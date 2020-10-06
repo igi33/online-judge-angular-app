@@ -1,1 +1,57 @@
-<p>task-form works!</p>
+<mat-card id="task-form-card">
+    <h1 *ngIf="id != 0">Edit task (ID: {{ id }})</h1>
+    <h1 *ngIf="id == 0">Create new task</h1>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Task name</mat-label>
+            <input matInput formControlName="task_name">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Task description</mat-label>
+            <textarea matInput formControlName="task_description" class="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Time limit per test case (ms)</mat-label>
+            <input matInput formControlName="task_time_limit">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Memory limit per test case (B)</mat-label>
+            <input matInput formControlName="task_memory_limit">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Task source</mat-label>
+            <input matInput formControlName="task_origin">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Task tags (comma separated)</mat-label>
+            <input matInput formControlName="task_tags">
+        </mat-form-field>
+
+        <div class="sliderVal">Number of test cases: <span>{{testCaseCount}}</span></div>
+        <mat-slider class="slider" min="1" max="15" step="1" color="primary" tickInterval="1" [(value)]="testCaseCount" (change)="sliderChange($event.value)"></mat-slider>
+        <div *ngFor="let item of [].constructor(testCaseCount); let i = index" class="answers" formArrayName="task_test_cases">
+            <div [formGroupName]="i" class="tc-group">
+                <mat-form-field appearance="fill" class="tc-input">
+                    <mat-label>Input #{{ i+1 }}</mat-label>
+                    <textarea matInput formControlName="input" class="tc-input-control"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="tc-output">
+                    <mat-label>Output #{{ i+1 }}</mat-label>
+                    <textarea matInput formControlName="output" class="tc-output-control"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div class="submit-button-container">
+            <button mat-raised-button type="button" class="btn-back" [routerLink]="id == 0 ? ['/tasks'] : ['/task', id]">Back</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Submit</button>
+        </div>
+    </form>
+</mat-card>

@@ -6,7 +6,7 @@
         <h2>Best Solutions</h2>
         <p *ngIf="!bestSolutions.length">No one has solved this task yet!</p>
         <mat-list role="list" *ngIf="bestSolutions.length">
-            <mat-list-item *ngFor="let sol of bestSolutions; index as i" role="listitem">{{ i+1 }}. {{ sol.user.username }} {{ sol.executionTime / 1000.0 }} s</mat-list-item>
+            <mat-list-item *ngFor="let sol of bestSolutions; index as i" role="listitem">{{ i+1 }}. <a mat-button [routerLink]="['/profile', sol.user.id]">{{ sol.user.username }}</a> {{ sol.executionTime / 1000.0 }} s</mat-list-item>
         </mat-list>
     </mat-sidenav>
 
@@ -32,6 +32,7 @@
                   <mat-option [value]="lang.id" *ngFor="let lang of computerLanguages">{{lang.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
+
               <mat-form-field>
                 <mat-label>Source code</mat-label>
                 <textarea matInput formControlName="source_code" class="source-code"></textarea>
@@ -47,6 +48,6 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<button *ngIf="task && currentUser && task.user.id == currentUser.id" mat-fab color="primary" class="fab-task-form" style="right: {{ sideNavOpen ? '340' : '30' }}px;" [routerLink]="['/task-form']" aria-label="Edit task">
+<button *ngIf="task && currentUser && task.user.id == currentUser.id" mat-fab color="primary" class="fab-task-form" style="right: {{ sideNavOpen ? '340' : '30' }}px;" [routerLink]="['/task', task.id, 'edit']" aria-label="Edit task">
   <mat-icon>create</mat-icon>
 </button>

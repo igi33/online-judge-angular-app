@@ -14,3 +14,12 @@
 .selected {
     background-color: rgba(0,0,255,0.2);
 }
+
+.submissions-wrapper table td a {
+    color: #000;
+    text-decoration: none;
+}
+
+.submissions-wrapper table td a:hover {
+    text-decoration: underline;
+}
