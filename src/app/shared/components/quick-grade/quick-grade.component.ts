@@ -38,6 +38,23 @@ export class QuickGradeComponent implements OnInit {
     });
   }
 
+  onKey(e) {
+    if (e.key == 'Tab') {
+      e.preventDefault();
+
+      let el = e.target;
+
+      var start = el.selectionStart;
+      var end = el.selectionEnd;
+  
+      // set textarea value to: text before caret + tab + text after caret
+      el.value = el.value.substring(0, start) + "\t" + el.value.substring(end);
+  
+      // put caret at right position again
+      el.selectionStart = el.selectionEnd = start + 1;
+    }
+  }
+
   onSubmit(): void {
     let gradeSubmission = new GradeSubmission({
       langId: this.quickGradeForm.get('lang_id').value,

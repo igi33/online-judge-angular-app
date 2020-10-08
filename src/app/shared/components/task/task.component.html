@@ -35,7 +35,7 @@
 
               <mat-form-field appearance="fill">
                 <mat-label>Source code</mat-label>
-                <textarea matInput formControlName="source_code" class="source-code"></textarea>
+                <textarea matInput formControlName="source_code" class="source-code" (keydown)="onKey($event)"></textarea>
               </mat-form-field>
               
               <div class="submit-button-container">

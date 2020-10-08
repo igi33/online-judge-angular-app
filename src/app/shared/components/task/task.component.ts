@@ -95,6 +95,23 @@ export class TaskComponent implements OnInit, OnDestroy {
       });
   }
 
+  onKey(e) {
+    if (e.key == 'Tab') {
+      e.preventDefault();
+
+      let el = e.target;
+
+      var start = el.selectionStart;
+      var end = el.selectionEnd;
+  
+      // set textarea value to: text before caret + tab + text after caret
+      el.value = el.value.substring(0, start) + "\t" + el.value.substring(end);
+  
+      // put caret at right position again
+      el.selectionStart = el.selectionEnd = start + 1;
+    }
+  }
+
   validURL(str: string): boolean {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
