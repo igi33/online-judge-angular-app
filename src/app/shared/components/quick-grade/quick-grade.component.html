@@ -1,0 +1,53 @@
+<mat-card>
+    <div id="quick-grade-form">
+        <h1>Quick grade</h1>
+        <form [formGroup]="quickGradeForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+              <mat-label>Computer language</mat-label>
+              <mat-select formControlName="lang_id">
+                <mat-option [value]="lang.id" *ngFor="let lang of computerLanguages">{{lang.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill">
+              <mat-label>Source code</mat-label>
+              <textarea matInput formControlName="source_code" class="source-code"></textarea>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill">
+                <mat-label>Time limit (ms)</mat-label>
+                <input matInput formControlName="time_limit">
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill">
+                <mat-label>Memory limit (B)</mat-label>
+                <input matInput formControlName="memory_limit">
+            </mat-form-field>
+    
+            <div class="tc-group">
+                <mat-form-field appearance="fill" class="tc-input">
+                    <mat-label>Input</mat-label>
+                    <textarea matInput formControlName="input" class="tc-input-control"></textarea>
+                </mat-form-field>
+        
+                <mat-form-field appearance="fill" class="tc-output">
+                    <mat-label>Expected output</mat-label>
+                    <textarea matInput formControlName="expected_output" class="tc-output-control"></textarea>
+                </mat-form-field>
+            </div>
+            
+            <div class="submit-button-container">
+              <button mat-raised-button color="primary" type="submit" [disabled]="quickGradeForm.invalid"><mat-icon>code</mat-icon> Grade</button>
+            </div>
+        </form>
+    </div>
+    <section class="output-container" *ngIf="grade">
+        <h2>Grading output</h2>
+        <h3>Status: <span [matTooltip]="grade.status==='AC' ? 'Accepted' : (grade.status==='RTE' ? 'Runtime Error' : (grade.status==='RJ' ? 'Rejected' : (grade.status==='CE' ? 'Compilation Error' : (grade.status==='MLE' ? 'Memory Limit Exceeded' : (grade.status==='TLE' ? 'Time Limit Exceeded' : 'Undefined')))))">{{grade.status}}</span></h3>
+        <h3 *ngIf="grade.message">Message: {{grade.message}}</h3>
+        <h3>Execution time (s): {{grade.executionTime / 1000.0}}</h3>
+        <h3>Execution memory (MiB): {{grade.executionMemory / 1024.0 / 1024.0}}</h3>
+        <h3>Output: <span *ngIf="!grade.output">None</span></h3>
+        <div class="output" *ngIf="grade.output">{{grade.output}}</div>
+    </section>
+</mat-card>

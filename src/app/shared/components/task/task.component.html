@@ -19,21 +19,21 @@
         <p class="desc">{{task.description}}</p>
 
         <h3>Time limit: {{task.timeLimit / 1000.0}} s</h3>
-        <h3>Memory limit: {{task.timeLimit / 1024.0 / 1024.0}} MiB</h3>
+        <h3>Memory limit: {{task.memoryLimit / 1024.0 / 1024.0}} MiB</h3>
         <h3>Submitted by: <a mat-button [routerLink]="['/profile', task.user.id]">{{task.user.username}}</a></h3>
         <h3 *ngIf="task.origin">Task source: {{!validURL(task.origin) ? task.origin : ''}}<a *ngIf="validURL(task.origin)" target="_blank" href="{{task.origin}}">{{task.origin}}</a></h3>
       
         <div id="task-submit-form">
           <h2>Submit solution</h2>
           <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Computer language</mat-label>
                 <mat-select formControlName="lang_id">
                   <mat-option [value]="lang.id" *ngFor="let lang of computerLanguages">{{lang.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Source code</mat-label>
                 <textarea matInput formControlName="source_code" class="source-code"></textarea>
               </mat-form-field>

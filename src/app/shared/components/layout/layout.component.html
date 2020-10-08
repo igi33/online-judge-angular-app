@@ -5,8 +5,6 @@
 
     <span class="spacer"></span>
 
-    <!--<button mat-icon-button class="iconButton"><mat-icon>search</mat-icon></button>-->
-
     <button mat-button [matMenuTriggerFor]="menu" class="userButton">
         <div class="avatar"></div>
         <h3>{{currentUser.username}}</h3>
@@ -30,11 +28,8 @@
         <div class="sidenav-inner">
             <a mat-button matTooltipPosition="after" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/tasks']" matTooltip="Tasks"><mat-icon>dashboard</mat-icon></a>
             <a mat-button matTooltipPosition="after" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/submissions']" matTooltip="Submissions"><mat-icon>fact_check</mat-icon></a>
+            <a mat-button matTooltipPosition="after" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/quick-grade']" matTooltip="Quick grade"><mat-icon>grading</mat-icon></a>
             <a mat-button matTooltipPosition="after" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/profile', currentUser.id]" matTooltip="My Profile"><mat-icon>face</mat-icon></a>
-            <!--
-            <div class="spacer"></div>
-            <a mat-button matTooltipPosition="after" matTooltip="Settings"><mat-icon>settings</mat-icon></a>
-            -->
         </div>
     </mat-sidenav>
 

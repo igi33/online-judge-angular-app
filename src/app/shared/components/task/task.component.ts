@@ -20,13 +20,16 @@ import { User } from '../../models/User';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
-export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TaskComponent implements OnInit, OnDestroy {
   task: Task;
   taskSubscription: Subscription;
   currentUser: User;
   computerLanguages: ComputerLanguage[] = [];
   bestSolutions: Submission[] = [];
-  taskForm: FormGroup;
+  taskForm: FormGroup = new FormGroup({
+    lang_id: new FormControl('', Validators.required),
+    source_code: new FormControl('', Validators.required),
+  });
 
   sideNavOpen: boolean = true;
   mode: string = 'side';
@@ -60,13 +63,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
           // viewport < 1280
           this.mode = 'over';
         }
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.taskForm = new FormGroup({
-      lang_id: new FormControl('', Validators.required),
-      source_code: new FormControl('', Validators.required),
     });
   }
 

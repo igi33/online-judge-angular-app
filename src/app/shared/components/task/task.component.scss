@@ -63,10 +63,11 @@ h3.qHeader {
     margin-bottom: 40px;
 }
 
-p.desc {
+.desc {
     margin-top: 50px;
     margin-bottom: 30px;
     text-align: justify;
+    white-space: pre-wrap;
 }
 
 #task-submit-form {

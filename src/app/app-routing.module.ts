@@ -9,6 +9,7 @@ import { ProfileComponent } from './shared/components/profile/profile.component'
 import { TaskComponent } from './shared/components/task/task.component';
 import { SubmissionsComponent } from './shared/components/submissions/submissions.component';
 import { TaskFormComponent } from './shared/components/task-form/task-form.component';
+import { QuickGradeComponent } from './shared/components/quick-grade/quick-grade.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'tasks', pathMatch: 'full' },
+      { path: 'quick-grade', component: QuickGradeComponent },
       { path: 'tasks/new', component: TaskFormComponent },
       { path: 'tasks', component: TasksComponent },
       { path: 'task/:id/edit', component: TaskFormComponent, pathMatch: 'full' },

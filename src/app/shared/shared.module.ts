@@ -18,6 +18,7 @@ import { TaskFormComponent } from './components/task-form/task-form.component';
 import { SubmissionsComponent } from './components/submissions/submissions.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { TaskComponent } from './components/task/task.component';
+import { QuickGradeComponent } from './components/quick-grade/quick-grade.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { TaskComponent } from './components/task/task.component';
     SubmissionsComponent,
     ProfileComponent,
     TaskComponent,
+    QuickGradeComponent,
   ],
   imports: [
     BrowserModule,
