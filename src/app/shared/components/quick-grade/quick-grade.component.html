@@ -43,11 +43,15 @@
     </div>
     <section class="output-container" *ngIf="grade">
         <h2>Grading output</h2>
-        <h3>Status: <span [matTooltip]="grade.status==='AC' ? 'Accepted' : (grade.status==='RTE' ? 'Runtime Error' : (grade.status==='RJ' ? 'Rejected' : (grade.status==='CE' ? 'Compilation Error' : (grade.status==='MLE' ? 'Memory Limit Exceeded' : (grade.status==='TLE' ? 'Time Limit Exceeded' : 'Undefined')))))">{{grade.status}}</span></h3>
-        <h3 *ngIf="grade.message">Message: {{grade.message}}</h3>
+        <h3>Status: <span [matTooltip]="grade.status==='AC' ? 'Accepted' : (grade.status==='RTE' ? 'Runtime Error' : (grade.status==='WA' ? 'Wrong answer' : (grade.status==='CE' ? 'Compilation Error' : (grade.status==='MLE' ? 'Memory Limit Exceeded' : (grade.status==='TLE' ? 'Time Limit Exceeded' : 'Undefined')))))">{{grade.status}}</span></h3>
+        
+        <h3 *ngIf="grade.error">Message:</h3>
+        <div *ngIf="grade.error" class="output">{{grade.error}}</div>
+        
         <h3>Execution time (s): {{grade.executionTime / 1000.0}}</h3>
         <h3>Execution memory (MiB): {{grade.executionMemory / 1024.0 / 1024.0}}</h3>
+        
         <h3>Output: <span *ngIf="!grade.output">None</span></h3>
-        <div class="output" *ngIf="grade.output">{{grade.output}}</div>
+        <div *ngIf="grade.output" class="output">{{grade.output}}</div>
     </section>
 </mat-card>

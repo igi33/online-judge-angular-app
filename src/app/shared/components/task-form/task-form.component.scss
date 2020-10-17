@@ -13,8 +13,8 @@ mat-form-field {
     display: block;
 }
 
-.description {
-    height: 300px;
+textarea.description {
+    height: 350px;
 }
 
 .btn-back {
@@ -33,7 +33,7 @@ mat-form-field {
 }
 
 .tc-input-control, .tc-output-control {
-    height: 60px;
+    height: 80px;
 }
 
 .slider {
