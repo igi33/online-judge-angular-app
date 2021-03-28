@@ -54,7 +54,6 @@ export class RegisterComponent implements OnInit {
                 this.registerForm.reset();
             },
             error => {
-                this.alertService.error(error);
                 this.loading = false;
             });
   }
