@@ -1,19 +1,23 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
     <mat-form-field class="full-width">
         <input type="text" matInput placeholder="Username" formControlName="username">
-        <mat-error *ngIf="submitted && f.username.errors">
-            Username is required
+        <mat-error *ngIf="f.username.invalid">
+            <ng-container *ngIf="f.username.errors.required">
+                Username is required
+            </ng-container>
         </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input [type]="hide ? 'password' : 'text'" matInput placeholder="Password" formControlName="password">
         <mat-icon class="eye" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-error *ngIf="submitted && f.password.errors">
-            Password is required
+        <mat-error *ngIf="f.password.invalid">
+            <ng-container *ngIf="f.password.errors.required">
+                Password is required
+            </ng-container>
         </mat-error>
     </mat-form-field>
     <div class="form-group">                
-        <button mat-raised-button color="primary" [disabled]="!loginForm.valid || loading">Login</button>
+        <button mat-raised-button color="primary" [disabled]="loginForm.invalid || loading">Login</button>
     </div>
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </form>

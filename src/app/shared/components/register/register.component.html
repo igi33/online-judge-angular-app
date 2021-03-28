@@ -1,31 +1,37 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="registerForm">
     <mat-form-field class="full-width">
         <input type="text" matInput placeholder="Username" formControlName="username">
-        <mat-error *ngIf="submitted && f.username.errors">
-            Username is required
+        <mat-error *ngIf="f.username.invalid">
+            <ng-container *ngIf="f.username.errors.required">
+                Username is required
+            </ng-container>
         </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input type="text" matInput placeholder="Email" formControlName="email">
-        <mat-error *ngIf="submitted && f.email.errors && f.email.errors.required">
-            Email is required
-        </mat-error>
-        <mat-error *ngIf="submitted && f.email.errors && f.email.errors.email">
-            Email is not valid
+        <mat-error *ngIf="f.email.invalid">
+            <ng-container *ngIf="f.email.errors.required">
+                Email is required
+            </ng-container>
+            <ng-container *ngIf="f.email.errors.email">
+                Email is not valid
+            </ng-container>
         </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input [type]="hide ? 'password' : 'text'" matInput placeholder="Password" formControlName="password">
         <mat-icon class="eye" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-error *ngIf="submitted && f.password.errors && f.password.errors.required">
-            Password is required
-        </mat-error>
-        <mat-error *ngIf="submitted && f.password.errors && f.password.errors.minlength">
-            Password must be at least 6 characters
+        <mat-error *ngIf="f.password.invalid">
+            <ng-container *ngIf="f.password.errors.required">
+                Password is required
+            </ng-container>
+            <ng-container *ngIf="f.password.errors.minlength">
+                Password must be at least 6 characters
+            </ng-container>
         </mat-error>
     </mat-form-field>
     <div class="form-group">                
-        <button mat-raised-button color="primary" [disabled]="!registerForm.valid || loading">Register</button>
+        <button mat-raised-button color="primary" [disabled]="registerForm.invalid || loading">Register</button>
     </div>
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </form>

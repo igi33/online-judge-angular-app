@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { AlertService } from '../../../core/services/alert.service';
 import { UserService } from '../../../core//services/user.service';
@@ -36,25 +36,18 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
-        return;
-    }
-
     this.loading = true;
+
     this.userService.postUser(this.registerForm.value)
-        .pipe(first())
+        .pipe(finalize(() => {
+          this.loading = false;
+          this.submitted = false;
+        }))
         .subscribe(
-            data => {
+            () => {
                 this.alertService.success('Registration successful');
-                this.loading = false;
-                this.submitted = false;
                 this.successfulRegistration.emit(this.f.username.value); // switch to login tab and autofill username
                 this.registerForm.reset();
-            },
-            error => {
-                this.loading = false;
             });
   }
 

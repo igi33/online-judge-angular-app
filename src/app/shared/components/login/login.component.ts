@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '../../../core/services/alert.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +20,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService) { }
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -37,31 +35,27 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
+
+  // used in auth component
   public prepareForm(username: string): void {
     this.f.username.setValue(username);
     this.f.password.setValue('');
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
-
-  onSubmit() {
+  onSubmit(): void {
       this.submitted = true;
-
-      // stop here if form is invalid
-      if (this.loginForm.invalid) {
-          return;
-      }
-
       this.loading = true;
+      
       this.authenticationService.login(this.f.username.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-              resp => {
-                  this.router.navigate([this.returnUrl]);
-              },
-              error => {
-                  this.loading = false;
-              });
+        .pipe(finalize(() => {
+          this.loading = false;
+          this.submitted = false;
+        }))
+        .subscribe(
+          () => {
+              this.router.navigate([this.returnUrl]);
+          });
   }
 }
