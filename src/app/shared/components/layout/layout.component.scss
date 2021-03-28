@@ -53,7 +53,12 @@ mat-toolbar > mat-icon {
     left: 0;
     right: 0;
     background: #eee;
-    padding-top: 64px;
+    padding-top: 68px;
+}
+
+mat-progress-bar {
+    margin-top: 64px;
+    z-index: 2;
 }
 
 .sidenav-inner {
