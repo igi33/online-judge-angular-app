@@ -14,14 +14,13 @@ export class AppComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     public snackBar: MatSnackBar,
-    private authService: AuthenticationService
-  ) {}
+    private authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.alertService.subject.subscribe(message => {
       if (message) {
         const dur = message.type === 'error' ? 7500 : 5000;
-        this.snackBar.open(message.text, null, {
+        this.snackBar.open(message.text, 'Close', {
           duration: dur,
         });
       }
