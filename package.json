@@ -21,10 +21,10 @@
     "@angular/platform-browser": "~11.2.7",
     "@angular/platform-browser-dynamic": "~11.2.7",
     "@angular/router": "~11.2.7",
-    "jwt-decode": "^2.2.0",
+    "jwt-decode": "^3.1.2",
     "ngx-infinite-scroll": "^9.0.0",
     "rxjs": "~6.6.6",
-    "tslib": "^2.0.0",
+    "tslib": "^2.1.0",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
