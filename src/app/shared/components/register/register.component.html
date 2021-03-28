@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="registerForm">
+<form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()" class="registerForm">
     <mat-form-field class="full-width">
         <input type="text" matInput placeholder="Username" formControlName="username">
         <mat-error *ngIf="f.username.invalid">
@@ -31,7 +31,7 @@
         </mat-error>
     </mat-form-field>
     <div class="form-group">                
-        <button mat-raised-button color="primary" [disabled]="registerForm.invalid || loading">Register</button>
+        <button mat-raised-button color="primary" [disabled]="registerForm.invalid || processingForm">Register</button>
     </div>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar *ngIf="processingForm" mode="indeterminate"></mat-progress-bar>
 </form>

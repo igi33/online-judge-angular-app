@@ -3,7 +3,6 @@ import { ScrollDispatcher } from '@angular/cdk/overlay';
 import { Tag } from '../../models/tag';
 import { TaskService } from 'src/app/core/services/task.service';
 import { TagService } from 'src/app/core/services/tag.service';
-import { first } from 'rxjs/operators';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Task } from '../../models/Task';
@@ -27,8 +26,7 @@ export class TasksComponent implements OnInit {
     private taskService: TaskService,
     private tagService: TagService,
     public breakpointObserver: BreakpointObserver,
-    public scroll: ScrollDispatcher,
-    private ngZone: NgZone
+    public scroll: ScrollDispatcher
   ) {}
 
   ngOnInit() {
@@ -38,20 +36,24 @@ export class TasksComponent implements OnInit {
     // screen size observer
     this.breakpointObserver
       .observe(['(min-width: 1280px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          // viewport > 1280
-          this.mode = 'side';
-        } else {
-          // viewport < 1280
-          this.mode = 'over';
+      .subscribe({
+        next: (state: BreakpointState) => {
+          if (state.matches) {
+            // viewport > 1280
+            this.mode = 'side';
+          } else {
+            // viewport < 1280
+            this.mode = 'over';
+          }
         }
     });
   }
 
   private loadTags() {
-    this.tagService.getTags().pipe(first()).subscribe(tags => {
-      this.tags = tags;
+    this.tagService.getTags().subscribe({
+      next: data => {
+        this.tags = data;
+      }
     });
   }
 
@@ -61,22 +63,24 @@ export class TasksComponent implements OnInit {
       this.tasks = [];
     }
     this.taskService.getTasks(this.tagId/*, this.pageSize, (this.page - 1)*this.pageSize*/)
-      .pipe(first()).subscribe(tasks => {
-        if (tasks.length > 0) {
-          ++this.page;
-          for (let t of tasks) {
-            this.tasks.push(t);
+      .subscribe({
+        next: data => {
+          if (data.length > 0) {
+            ++this.page;
+            for (let task of data) {
+              this.tasks.push(task);
+            }
           }
         }
     });
   }
 
-  private getDate(date: string) {
-    return new Date(date);
-  }
-
   public setTag(tagId: number): void {
     this.tagId = tagId;
     this.loadMoreTasks(true);
+  }
+
+  private getDate(date: string) {
+    return new Date(date);
   }
 }

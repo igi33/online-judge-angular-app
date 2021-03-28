@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { User } from '../../models/User';
 import { SubmissionService } from 'src/app/core/services/submission.service';
 import { Submission } from '../../models/submission';
@@ -58,19 +57,23 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadProfile() {
-    this.userSubscription = this.route.params.subscribe((params: Params) => {
-      const id = +params['id'];
-      this.userService.getUser(id).pipe(first()).subscribe(resp => {
-        this.user = resp;
-      });
+    this.userSubscription = this.route.params.subscribe({
+      next: (params: Params) => {
+        const id = +params['id'];
+        this.userService.getUser(id).subscribe({
+          next: data => {
+            this.user = data;
+          }
+        });
 
-      this.taskService.getSolvedTasksByUser(id).pipe(first()).subscribe(resp => {
-        this.solvedTasksDataSource.data = resp;
-      });
+        this.taskService.getSolvedTasksByUser(id).subscribe(data => {
+          this.solvedTasksDataSource.data = data;
+        });
 
-      this.submissionService.getSubmissions(0, id).pipe(first()).subscribe(resp => {
-        this.submissionDataSource.data = resp;
-      });
+        this.submissionService.getSubmissions(0, id).subscribe(data => {
+          this.submissionDataSource.data = data;
+        });
+      }
     });
   }
 

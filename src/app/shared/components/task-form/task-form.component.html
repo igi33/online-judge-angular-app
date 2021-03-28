@@ -1,17 +1,27 @@
 <mat-card id="task-form-card">
-    <h1 *ngIf="id != 0">Edit task (ID: {{ id }})</h1>
-    <h1 *ngIf="id == 0">Create new task</h1>
+    <h1 *ngIf="id != 0; else createTaskHeading">Edit task (ID: {{ id }})</h1>
+    <ng-template #createTaskHeading><h1>Create new task</h1></ng-template>
 
-    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="taskForm" (ngSubmit)="submitTaskForm()">
 
         <mat-form-field appearance="fill">
             <mat-label>Task name</mat-label>
-            <input matInput formControlName="task_name">
+            <input matInput type="text" formControlName="task_name">
+            <mat-error *ngIf="f.task_name.invalid">
+                <ng-container *ngIf="f.task_name.errors.required">
+                    Task name is required.
+                </ng-container>
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Task description</mat-label>
             <textarea matInput formControlName="task_description" class="description"></textarea>
+            <mat-error *ngIf="f.task_description.invalid">
+                <ng-container *ngIf="f.task_description.errors.required">
+                    Task description is required.
+                </ng-container>
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -48,36 +58,36 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Task source</mat-label>
-            <input matInput formControlName="task_origin">
+            <input matInput type="text" formControlName="task_origin">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Task tags (comma separated)</mat-label>
-            <input matInput formControlName="task_tags">
+            <input matInput type="text" formControlName="task_tags">
         </mat-form-field>
 
         <div class="sliderVal">Number of test cases: <span>{{testCaseCount}}</span></div>
         <mat-slider class="slider" [min]="task ? task.testCases.length : 1" max="15" step="1" color="primary" tickInterval="1" [(value)]="testCaseCount" (change)="sliderChange()"></mat-slider>
-        <div *ngFor="let item of [].constructor(testCaseCount); let i = index" id="tcs" formArrayName="task_test_cases">
+        <div *ngFor="let item of [].constructor(testCaseCount); let i = index" class="tcs" formArrayName="task_test_cases">
             <div [formGroupName]="i" class="tc-group">
                 Test case #{{ i+1 }}
-                <ng-container *ngIf="id != 0 && task && i < task.testCases.length">
+                <ng-container *ngIf="id != 0 && task && i < task.testCases.length; else newTcBlock">
                     <button mat-stroked-button color="accent" type="button" (click)="downloadInput(i)">Download input</button>
                     <button mat-stroked-button color="accent" type="button" (click)="downloadOutput(i)">Download output</button>
                     <mat-checkbox formControlName="remove">Mark for removal</mat-checkbox>
                 </ng-container>
-                <ng-container *ngIf="id == 0 || !task || i >= task.testCases.length">
+                <ng-template #newTcBlock>
                     <button #tcFileInputBtn mat-stroked-button color="primary" type="button" (click)="tcFileInput.click()">{{ btnTextInputs[i] }}</button>
                     <button #tcFileOutputBtn mat-stroked-button color="primary" type="button" (click)="tcFileOutput.click()">{{ btnTextOutputs[i] }}</button>
                     <input hidden #tcFileInput color="primary" type="file" class="upload-file" (change)="handleFileInput($event, i, tcFileInputBtn)" />
                     <input hidden #tcFileOutput color="primary" type="file" class="upload-file" (change)="handleFileOutput($event, i, tcFileOutputBtn)" />
-                </ng-container>
+                </ng-template>
             </div>
         </div>
         
         <div class="submit-button-container">
             <button mat-raised-button type="button" class="btn-back" [routerLink]="id == 0 ? ['/tasks'] : ['/task', id]">Back</button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Submit</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid || processingForm">Submit</button>
         </div>
     </form>
 </mat-card>

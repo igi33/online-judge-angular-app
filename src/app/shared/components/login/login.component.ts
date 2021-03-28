@@ -11,8 +11,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
-  submitted = false;
+  processingForm = false;
   returnUrl: string;
   hide = true;
 
@@ -44,14 +43,12 @@ export class LoginComponent implements OnInit {
     this.f.password.setValue('');
   }
 
-  onSubmit(): void {
-      this.submitted = true;
-      this.loading = true;
+  submitLoginForm(): void {
+      this.processingForm = true;
       
       this.authenticationService.login(this.f.username.value, this.f.password.value)
         .pipe(finalize(() => {
-          this.loading = false;
-          this.submitted = false;
+          this.processingForm = false;
         }))
         .subscribe(
           () => {

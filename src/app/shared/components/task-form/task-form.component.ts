@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { TaskService } from 'src/app/core/services/task.service';
 import { TestCaseService } from 'src/app/core/services/test-case.service';
@@ -36,6 +36,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   outputFiles = new Map<number, File>();
   btnTextInputs: string[];
   btnTextOutputs: string[];
+  processingForm = false;
   
   constructor(
     private alertService: AlertService,
@@ -55,20 +56,22 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.taskSubscription = this.route.paramMap.subscribe(paramMap => {
       if (paramMap.has('id')) {
         this.id = +paramMap.get('id');
-        this.taskService.getTask(this.id).pipe(first()).subscribe(resp => {
-          this.task = resp;
+        this.taskService.getTask(this.id).subscribe({
+          next: data => {
+            this.task = data;
 
-          this.testCaseCount = this.task.testCases.length;
-          this.updateTestCaseControls();
+            this.testCaseCount = this.task.testCases.length;
+            this.updateTestCaseControls();
 
-          this.taskForm.patchValue({
-            task_name: this.task.name,
-            task_description: this.task.description,
-            task_time_limit: this.task.timeLimit,
-            task_memory_limit: this.task.memoryLimit,
-            task_origin: this.task.origin,
-            task_tags: this.task.tags.map(t => t.name).join(', '),
-          });
+            this.taskForm.patchValue({
+              task_name: this.task.name,
+              task_description: this.task.description,
+              task_time_limit: this.task.timeLimit,
+              task_memory_limit: this.task.memoryLimit,
+              task_origin: this.task.origin,
+              task_tags: this.task.tags.map(t => t.name).join(', '),
+            });
+          }
         });
       }
     });
@@ -77,7 +80,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   // convenience getter for easy access to form fields
   get f() { return this.taskForm.controls; }
 
-  public downloadInput(idx: number) {
+  public downloadInput(idx: number): void {
     if (idx >= 0 && idx < this.task.testCases.length) {
       let id = this.task.testCases[idx].id;
       this.testCaseService.getTestCaseInput(id).subscribe(data => {
@@ -86,7 +89,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public downloadOutput(idx: number) {
+  public downloadOutput(idx: number): void {
     if (idx >= 0 && idx < this.task.testCases.length) {
       let id = this.task.testCases[idx].id;
       this.testCaseService.getTestCaseOutput(id).subscribe(data => {
@@ -96,7 +99,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   // force download file generated from string
-  private downloadTextFile(id: number, data: Blob, ext: string = 'txt') {
+  private downloadTextFile(id: number, data: Blob, ext: string = 'txt'): void {
     let binaryData = [data];
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
@@ -105,14 +108,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     downloadLink.click();
   }
 
-  public handleFileInput(event, i, btn) {
+  public handleFileInput(event, i, btn): void {
     const file = event.target.files[0];
     this.inputFiles.set(i, file);
     btn.color = "accent";
     this.btnTextInputs[i] = file.name;
   }
 
-  public handleFileOutput(event, i, btn) {
+  public handleFileOutput(event, i, btn): void {
     const file = event.target.files[0];
     this.outputFiles.set(i, file);
     btn.color = "accent";
@@ -120,7 +123,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
   
   // test case number slider change
-  public sliderChange() {
+  public sliderChange(): void {
     this.updateTestCaseControls();
   }
 
@@ -149,7 +152,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   // collect task info from form and populate form data
-  onSubmit(): void {
+  submitTaskForm(): void {
+    this.processingForm = true;
+
     let formData: FormData = new FormData();
     
     // gather new tcs
@@ -213,13 +218,21 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     // create new task or edit existing one
     if (this.id) {
       task.id = this.id;
-      this.taskService.putTask(this.id, formData).pipe(first()).subscribe(resp => {
-        this.router.navigate(['/task', this.id]);
-        this.alertService.success('The task has successfully been edited!')
+      this.taskService.putTask(this.id, formData)
+        .pipe(finalize(() => this.processingForm = false))
+        .subscribe({
+          next: _ => {
+            this.router.navigate(['/task', this.id]);
+            this.alertService.success('The task has successfully been edited!');
+          }
       });
     } else {
-      this.taskService.postTask(formData).pipe(first()).subscribe(resp => {
-        this.router.navigate(['/task', resp.id]);
+      this.taskService.postTask(formData)
+        .pipe(finalize(() => this.processingForm = false))
+        .subscribe({
+          next: data => {
+            this.router.navigate(['/task', data.id]);
+          }
       });
     }
   }

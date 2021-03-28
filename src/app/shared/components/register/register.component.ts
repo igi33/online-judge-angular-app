@@ -12,8 +12,7 @@ import { UserService } from '../../../core//services/user.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  loading = false;
-  submitted = false;
+  processingForm = false;
   hide = true;
 
   @Output() successfulRegistration = new EventEmitter<string>();
@@ -34,14 +33,12 @@ export class RegisterComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.registerForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
-    this.loading = true;
+  submitRegisterForm() {
+    this.processingForm = true;
 
     this.userService.postUser(this.registerForm.value)
         .pipe(finalize(() => {
-          this.loading = false;
-          this.submitted = false;
+          this.processingForm = false;
         }))
         .subscribe(
             () => {

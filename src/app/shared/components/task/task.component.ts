@@ -1,11 +1,10 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { AlertService } from 'src/app/core/services/alert.service';
+import { finalize } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ComputerLanguageService } from 'src/app/core/services/computer-language.service';
 import { SubmissionService } from 'src/app/core/services/submission.service';
@@ -30,13 +29,12 @@ export class TaskComponent implements OnInit, OnDestroy {
     lang_id: new FormControl('', Validators.required),
     source_code: new FormControl('', Validators.required),
   });
-
-  sideNavOpen: boolean = true;
+  sideNavOpen = true;
   mode: string = 'side';
   @ViewChildren(MatExpansionPanel) panel: QueryList<MatExpansionPanel>;
+  processingForm = false;
 
   constructor(
-    private alertService: AlertService,
     private authService: AuthenticationService,
     private taskService: TaskService,
     private submissionService: SubmissionService,
@@ -55,54 +53,67 @@ export class TaskComponent implements OnInit, OnDestroy {
     // screen size observer
     this.breakpointObserver
       .observe(['(min-width: 1280px)'])
-      .subscribe((state: BreakpointState) => {
-        if (state.matches) {
-          // viewport > 1280
-          this.mode = 'side';
-        } else {
-          // viewport < 1280
-          this.mode = 'over';
+      .subscribe({
+        next: (state: BreakpointState) => {
+          if (state.matches) {
+            // viewport > 1280
+            this.mode = 'side';
+          } else {
+            // viewport < 1280
+            this.mode = 'over';
+          }
         }
     });
   }
 
   loadTask(): void {
-    this.taskSubscription = this.route.params.subscribe((params: Params) => {
-      const id = +params['id'];
-      this.taskService.getTask(id).pipe(first()).subscribe(resp => {
-        this.task = resp;
-      });
-      this.submissionService.getBestSubmissionsOfTask(id, 10).pipe(first()).subscribe(resp => {
-        this.bestSolutions = resp;
-      });
+    this.taskSubscription = this.route.params.subscribe({
+      next: (params: Params) => {
+        const id = +params['id'];
+        this.taskService.getTask(id).subscribe({
+          next: data => {
+            this.task = data;
+          }
+        });
+        this.submissionService.getBestSubmissionsOfTask(id, 10).subscribe({
+          next: data => {
+            this.bestSolutions = data;
+          }
+        });
+      }
     });
   }
 
   loadLangs(): void {
-    this.langService.getComputerLanguages().pipe(first()).subscribe(resp => {
-      this.computerLanguages = resp;
+    this.langService.getComputerLanguages().subscribe({
+      next: data => {
+        this.computerLanguages = data;
+      }
     });
   }
 
-  onSubmit(): void {
+  submitSolution(): void {
+    this.processingForm = true;
     let solution = new Submission ({
       langId: this.taskForm.get('lang_id').value,
       sourceCode: this.taskForm.get('source_code').value,
     });
-    this.submissionService.postSubmission(this.task.id, solution).pipe(first()).subscribe(
-      resp => {
-        this.router.navigate(['/submissions'], {queryParams: {selectedId: resp.id}});
-      });
+    this.submissionService.postSubmission(this.task.id, solution)
+      .pipe(finalize(() => this.processingForm = false))
+      .subscribe({
+        next: data => {
+          this.router.navigate(['/submissions'], { queryParams: { selectedId: data.id }});
+        }
+    });
   }
 
-  onKey(e) {
+  onKey(e): void {
     if (e.key == 'Tab') {
       e.preventDefault();
 
       let el = e.target;
-
-      var start = el.selectionStart;
-      var end = el.selectionEnd;
+      const start = el.selectionStart;
+      const end = el.selectionEnd;
   
       // set textarea value to: text before caret + tab + text after caret
       el.value = el.value.substring(0, start) + "\t" + el.value.substring(end);
