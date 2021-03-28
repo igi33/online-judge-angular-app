@@ -21,8 +21,16 @@ textarea.description {
     margin-right: 15px;
 }
 
+#tcs {
+    margin-bottom: 10px;
+}
+
 .tc-group {
     overflow: hidden;
+}
+
+.tc-group button, .tc-group mat-checkbox {
+    margin-left: 15px;
 }
 
 .tc-input, .tc-output {
@@ -42,6 +50,7 @@ textarea.description {
 
 .submit-button-container {
     text-align: center;
+    margin-top: 15px;
 }
 
 button {

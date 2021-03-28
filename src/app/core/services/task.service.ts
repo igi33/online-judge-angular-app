@@ -22,12 +22,12 @@ export class TaskService {
     return this.http.get<Task>(`/api/task/${id}`);
   }
 
-  postTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(`/api/task`, task);
+  postTask(taskFormData: FormData): Observable<Task> {
+    return this.http.post<Task>(`/api/task`, taskFormData);
   }
 
-  putTask(id: number, task: Task): Observable<void> {
-    return this.http.put<void>(`/api/task/${id}`, task);
+  putTask(id: number, taskFormData: FormData): Observable<void> {
+    return this.http.put<void>(`/api/task/${id}`, taskFormData);
   }
 
   deleteTask(id: number): Observable<void> {

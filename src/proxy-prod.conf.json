@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+      "target": "http://160.99.55.104",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": "http://160.99.55.104/api"
+      }
+    }
+}

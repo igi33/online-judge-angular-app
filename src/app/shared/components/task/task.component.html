@@ -6,7 +6,7 @@
         <h2>Best Solutions</h2>
         <p *ngIf="!bestSolutions.length">No one has solved this task yet!</p>
         <mat-list role="list" *ngIf="bestSolutions.length">
-            <mat-list-item *ngFor="let sol of bestSolutions; index as i" role="listitem">{{ i+1 }}. <a mat-button [routerLink]="['/profile', sol.user.id]">{{ sol.user.username }}</a> {{ sol.executionTime / 1000.0 }} s</mat-list-item>
+            <mat-list-item *ngFor="let sol of bestSolutions; index as i" role="listitem">{{ i+1 }}. <a mat-button [routerLink]="['/profile', sol.user.id]">{{ sol.user.username }}</a> {{ sol.executionTime / 1000.0 }} s ({{ sol.computerLanguage.extension }})</mat-list-item>
         </mat-list>
     </mat-sidenav>
 

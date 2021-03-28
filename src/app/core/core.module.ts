@@ -11,6 +11,7 @@ import { AlertService } from './services/alert.service';
 
 import { UserService } from './services/user.service';
 import { TaskService } from './services/task.service';
+import { TestCaseService } from './services/test-case.service';
 import { TagService } from './services/tag.service';
 import { SubmissionService } from './services/submission.service';
 import { ComputerLanguageService } from './services/computer-language.service';
@@ -22,6 +23,7 @@ import { ComputerLanguageService } from './services/computer-language.service';
     AlertService,
     UserService,
     TaskService,
+    TestCaseService,
     TagService,
     SubmissionService,
     ComputerLanguageService,

@@ -16,12 +16,34 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Time limit per test case (ms)</mat-label>
-            <input matInput formControlName="task_time_limit">
+            <input matInput type="text" formControlName="task_time_limit">
+            <mat-error *ngIf="f.task_time_limit.invalid">
+                <ng-container *ngIf="f.task_time_limit.errors.required">
+                    Task time limit is required.
+                </ng-container>
+                <ng-container *ngIf="f.task_time_limit.errors.min">
+                    Task time limit must be greater than or equal to zero.
+                </ng-container>
+                <ng-container *ngIf="f.task_time_limit.errors.max">
+                    Task time limit must be less than or equal to 10000 (10 s).
+                </ng-container>
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Memory limit per test case (B)</mat-label>
-            <input matInput formControlName="task_memory_limit">
+            <input matInput type="text" formControlName="task_memory_limit">
+            <mat-error *ngIf="f.task_memory_limit.invalid">
+                <ng-container *ngIf="f.task_memory_limit.errors.required">
+                    Task memory limit is required.
+                </ng-container>
+                <ng-container *ngIf="f.task_memory_limit.errors.min">
+                    Task memory limit must be greater than or equal to zero.
+                </ng-container>
+                <ng-container *ngIf="f.task_memory_limit.errors.max">
+                    Task memory limit must be less than or equal to 268435456 (256 MB).
+                </ng-container>
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -35,17 +57,21 @@
         </mat-form-field>
 
         <div class="sliderVal">Number of test cases: <span>{{testCaseCount}}</span></div>
-        <mat-slider class="slider" min="1" max="15" step="1" color="primary" tickInterval="1" [(value)]="testCaseCount" (change)="sliderChange($event.value)"></mat-slider>
-        <div *ngFor="let item of [].constructor(testCaseCount); let i = index" class="answers" formArrayName="task_test_cases">
+        <mat-slider class="slider" [min]="task ? task.testCases.length : 1" max="15" step="1" color="primary" tickInterval="1" [(value)]="testCaseCount" (change)="sliderChange()"></mat-slider>
+        <div *ngFor="let item of [].constructor(testCaseCount); let i = index" id="tcs" formArrayName="task_test_cases">
             <div [formGroupName]="i" class="tc-group">
-                <mat-form-field appearance="fill" class="tc-input">
-                    <mat-label>Input #{{ i+1 }}</mat-label>
-                    <textarea matInput formControlName="input" class="tc-input-control"></textarea>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="tc-output">
-                    <mat-label>Output #{{ i+1 }}</mat-label>
-                    <textarea matInput formControlName="output" class="tc-output-control"></textarea>
-                </mat-form-field>
+                Test case #{{ i+1 }}
+                <ng-container *ngIf="id != 0 && task && i < task.testCases.length">
+                    <button mat-stroked-button color="accent" type="button" (click)="downloadInput(i)">Download input</button>
+                    <button mat-stroked-button color="accent" type="button" (click)="downloadOutput(i)">Download output</button>
+                    <mat-checkbox formControlName="remove">Mark for removal</mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="id == 0 || !task || i >= task.testCases.length">
+                    <button #tcFileInputBtn mat-stroked-button color="primary" type="button" (click)="tcFileInput.click()">{{ btnTextInputs[i] }}</button>
+                    <button #tcFileOutputBtn mat-stroked-button color="primary" type="button" (click)="tcFileOutput.click()">{{ btnTextOutputs[i] }}</button>
+                    <input hidden #tcFileInput color="primary" type="file" class="upload-file" (change)="handleFileInput($event, i, tcFileInputBtn)" />
+                    <input hidden #tcFileOutput color="primary" type="file" class="upload-file" (change)="handleFileOutput($event, i, tcFileOutputBtn)" />
+                </ng-container>
             </div>
         </div>
         

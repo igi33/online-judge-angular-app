@@ -74,7 +74,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "online-judge-angular-app:build:production"
+              "browserTarget": "online-judge-angular-app:build:production",
+              "proxyConfig": "src/proxy-prod.conf.json"
             }
           }
         },
