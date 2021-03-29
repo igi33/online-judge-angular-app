@@ -65,6 +65,7 @@
     </div>
     <section class="output-container" *ngIf="grade">
         <h2>Grading output</h2>
+        <h3>Submitted at: {{this.getDate(grade.submittedAt) | date:'mediumDate'}} {{this.getDate(grade.submittedAt) | date:'HH:mm'}}</h3>
         <h3>Status: <span [matTooltip]="grade.status==='AC' ? 'Accepted' : (grade.status==='RTE' ? 'Runtime Error' : (grade.status==='WA' ? 'Wrong answer' : (grade.status==='CE' ? 'Compilation Error' : (grade.status==='MLE' ? 'Memory Limit Exceeded' : (grade.status==='TLE' ? 'Time Limit Exceeded' : 'Undefined')))))">{{grade.status}}</span></h3>
         
         <ng-container *ngIf="grade.error">

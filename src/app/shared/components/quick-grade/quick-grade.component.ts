@@ -75,8 +75,12 @@ export class QuickGradeComponent implements OnInit {
       .pipe(finalize(() => this.processingForm = false))
       .subscribe({
         next: data => {
-        this.grade = data;
-      }
+          this.grade = data;
+        }
     });
+  }
+  
+  private getDate(date: string) {
+    return new Date(date);
   }
 }

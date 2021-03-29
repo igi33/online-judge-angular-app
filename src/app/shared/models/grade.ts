@@ -4,4 +4,5 @@ export class Grade {
     executionMemory: number;
     output: string;
     error: string;
+    submittedAt: any;
 }
