@@ -1,16 +1,16 @@
 <div class="wrapper">
 
     <mat-card class="profile" *ngIf="user">
-      <a mat-icon-button routerLink="." class="settings"><mat-icon>settings</mat-icon></a>
-      <mat-progress-bar mode="determinate" value="40" class="avg"></mat-progress-bar>
+      <!--<a mat-icon-button routerLink="." class="settings"><mat-icon>settings</mat-icon></a>-->
+      <mat-progress-bar mode="determinate" value="50" class="avg"></mat-progress-bar>
   
-      <img src="/assets/images/avatar{{user.id % 8}}.svg" class="userImage">
+      <img src="/assets/images/avatar0.svg" class="userImage">
       <div class="creds">
         <h3>{{user.username}}</h3>
-        <h3 class="mail">{{user.email}}</h3>
+        <span class="mail">{{user.email}}</span>
       </div>
+      <!--
       <div class="separator"></div>
-  
       <div class="avgScore">
         <mat-icon>star</mat-icon>
         <mat-icon>star_half</mat-icon>
@@ -18,24 +18,19 @@
         <mat-icon>star_border</mat-icon>
         <mat-icon>star_border</mat-icon>
       </div>
-  
+      -->
       <div class="separator"></div>
-  
       <div class="infoWrap">
         <div class="infoLine">
-          <div class="infoTitle">Created tasks</div>
-          <div class="infoValue">17</div>
-        </div>
-        <div class="infoLine">
-          <div class="infoTitle">Solved tasks</div>
-          <div class="infoValue">84</div>
+          <div class="infoTitle">Solved public tasks</div>
+          <div class="infoValue">{{ solvedTasksDataSource.data.length }}</div>
         </div>
         <div class="infoLine">
           <div class="infoTitle">Submissions</div>
-          <div class="infoValue">35</div>
+          <div class="infoValue">{{ submissionDataSource.data.length }}</div>
         </div>
       </div>
-  
+  <!--
       <div class="separator"></div>
       <div class="contact">
         <div class="social"></div>
@@ -43,12 +38,12 @@
         <div class="social"></div>
         <div class="social"></div>
       </div>
-  
+  -->
     </mat-card>
   
     <mat-tab-group class="stats">
 
-      <mat-tab label="Solved tasks">
+      <mat-tab label="Solved Public Tasks">
         <mat-card class="tableWrapper">
           <table id="solved-tasks-table" #solvedTasksTable="matSort" mat-table [dataSource]="solvedTasksDataSource" matSort>
             <ng-container matColumnDef="id">
