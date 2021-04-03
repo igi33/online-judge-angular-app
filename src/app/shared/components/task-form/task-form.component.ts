@@ -183,6 +183,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
     if (!this.id && validTcNum == 0 || this.id && validTcNum == 0 && tcs.length == this.task.testCases.length) {
       this.alertService.error('There must be at least one test case!');
+      this.processingForm = false;
       return;
     }
 
