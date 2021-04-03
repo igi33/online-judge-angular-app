@@ -10,6 +10,7 @@ export class Task {
     timeLimit: number;
     timeSubmitted: any;
     origin: string;
+    isPublic: boolean;
     user: User;
     testCases: TestCase[];
     tags: Tag[];
