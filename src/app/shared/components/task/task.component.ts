@@ -132,10 +132,6 @@ export class TaskComponent implements OnInit, OnDestroy {
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
   }
-  
-  private getDate(date: string) {
-    return new Date(date);
-  }
 
   ngOnDestroy(): void {
     this.taskSubscription.unsubscribe();
