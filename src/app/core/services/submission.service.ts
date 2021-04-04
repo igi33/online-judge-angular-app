@@ -14,6 +14,10 @@ export class SubmissionService {
     return this.http.get<Submission[]>(`/api/submission?taskId=${taskId}&userId=${userId}&limit=${limit}&offset=${offset}`);
   }
 
+  getSubmissionCount(taskId: number = 0, userId: number = 0) : Observable<number> {
+    return this.http.get<number>(`/api/submission/count?taskId=${taskId}&userId=${userId}`);
+  }
+
   getSubmission(id: number) : Observable<Submission> {
     return this.http.get<Submission>(`/api/submission/${id}`);
   }
