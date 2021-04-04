@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { User } from '../../models/User';
 import { SubmissionService } from 'src/app/core/services/submission.service';
-import { Submission } from '../../models/submission';
 import { TaskService } from 'src/app/core/services/task.service';
-import { Task } from '../../models/Task';
+import { SolvedTasksDataSource } from '../../data-sources/solved-tasks-data-source';
+import { tap } from 'rxjs/operators';
+import { SubmissionsDataSource } from '../../data-sources/submissions-data-source';
 
 @Component({
   selector: 'app-profile',
@@ -20,15 +19,17 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   user: User;
   userSubscription: Subscription;
 
-  displayedSubmissionColumns: string[] = ['task.name', 'computerLanguage.name', 'executionTime', 'executionMemory', 'status', 'timeSubmitted'];
-  submissionDataSource: MatTableDataSource<Submission> = new MatTableDataSource([]);
-  @ViewChild('submissionPaginator') submissionPaginator: MatPaginator;
-  @ViewChild('submissionTable') submissionSort: MatSort;
+  userSubmissionsDataSource: SubmissionsDataSource;
+  userSubmissionsTotalItems: number = 0;
+  userSubmissionsPageSize: number = 10;
+  displayedUserSubmissionsColumns: string[] = ['task.name', 'computerLanguage.name', 'executionTime', 'executionMemory', 'status', 'timeSubmitted'];
+  @ViewChild('userSubmissionsPaginator') userSubmissionsPaginator: MatPaginator;
 
+  solvedTasksDataSource: SolvedTasksDataSource;
+  solvedTasksTotalItems: number = 0;
+  solvedTasksPageSize: number = 10;
   displayedSolvedTasksColumns: string[] = ['name', 'timeLimit', 'memoryLimit', 'user.username', 'timeSubmitted'];
-  solvedTasksDataSource: MatTableDataSource<Task> = new MatTableDataSource([]);
   @ViewChild('solvedTasksPaginator') solvedTasksPaginator: MatPaginator;
-  @ViewChild('solvedTasksTable') solvedTasksSort: MatSort;
   
   constructor(
     private route: ActivatedRoute,
@@ -41,19 +42,17 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let sda = (item: any, property: string) => {
-      let val = property.includes('.') ? property.split('.').reduce((o,i)=>o[i], item) : item[property];
-      if (typeof val === 'string') val = val.toLocaleLowerCase();
-      return val;
-    };
+    this.solvedTasksPaginator.page
+      .pipe(
+        tap(() => this.loadSolvedTasksPage())
+      )
+      .subscribe();
 
-    this.solvedTasksDataSource.paginator = this.solvedTasksPaginator;
-    this.solvedTasksDataSource.sort = this.solvedTasksSort;
-    this.solvedTasksDataSource.sortingDataAccessor = sda;
-
-    this.submissionDataSource.paginator = this.submissionPaginator;
-    this.submissionDataSource.sort = this.submissionSort;
-    this.submissionDataSource.sortingDataAccessor = sda;
+    this.userSubmissionsPaginator.page
+      .pipe(
+        tap(() => this.loadUserSubmissionsPage())
+      )
+      .subscribe();
   }
 
   loadProfile() {
@@ -66,15 +65,29 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
 
-        this.taskService.getSolvedTasksByUser(id).subscribe(data => {
-          this.solvedTasksDataSource.data = data;
-        });
+        this.solvedTasksDataSource = new SolvedTasksDataSource(this.taskService);
+        this.solvedTasksDataSource.loadSolvedTasks(id, this.solvedTasksPageSize);
+        this.taskService.getSolvedTasksByUserCount(id)
+          .subscribe({
+            next: count => this.solvedTasksTotalItems = count
+          });
 
-        this.submissionService.getSubmissions(0, id).subscribe(data => {
-          this.submissionDataSource.data = data;
-        });
+        this.userSubmissionsDataSource = new SubmissionsDataSource(this.submissionService);
+        this.userSubmissionsDataSource.loadSubmissions(0, id, this.solvedTasksPageSize);
+        this.submissionService.getSubmissionCount(0, id)
+          .subscribe({
+            next: count => this.userSubmissionsTotalItems = count
+          });
       }
     });
+  }
+
+  loadSolvedTasksPage(): void {
+    this.solvedTasksDataSource.loadSolvedTasks(this.user.id, this.solvedTasksPaginator.pageSize, this.solvedTasksPaginator.pageIndex);
+  }
+
+  loadUserSubmissionsPage(): void {
+    this.userSubmissionsDataSource.loadSubmissions(0, this.user.id, this.userSubmissionsPaginator.pageSize, this.userSubmissionsPaginator.pageIndex);
   }
 
   ngOnDestroy(): void {

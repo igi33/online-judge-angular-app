@@ -18,6 +18,10 @@ export class TaskService {
     return this.http.get<Task[]>(`/api/task/solvedby/${userId}?limit=${limit}&offset=${offset}`);
   }
 
+  getSolvedTasksByUserCount(userId: number): Observable<number> {
+    return this.http.get<number>(`/api/task/solvedby/${userId}/count`);
+  }
+
   getTask(id: number): Observable<Task> {
     return this.http.get<Task>(`/api/task/${id}`);
   }

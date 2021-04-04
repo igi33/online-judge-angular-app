@@ -23,11 +23,11 @@
       <div class="infoWrap">
         <div class="infoLine">
           <div class="infoTitle">Solved public tasks</div>
-          <div class="infoValue">{{ solvedTasksDataSource.data.length }}</div>
+          <div class="infoValue">{{ solvedTasksTotalItems }}</div>
         </div>
         <div class="infoLine">
           <div class="infoTitle">Submissions</div>
-          <div class="infoValue">{{ submissionDataSource.data.length }}</div>
+          <div class="infoValue">{{ userSubmissionsTotalItems }}</div>
         </div>
       </div>
   <!--
@@ -45,34 +45,34 @@
 
       <mat-tab label="Solved Public Tasks">
         <mat-card class="tableWrapper">
-          <table id="solved-tasks-table" #solvedTasksTable="matSort" mat-table [dataSource]="solvedTasksDataSource" matSort>
+          <table id="solved-tasks-table" mat-table [dataSource]="solvedTasksDataSource">
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <th mat-header-cell *matHeaderCellDef>ID</th>
                 <td mat-cell *matCellDef="let element">{{element.id}}</td>
             </ng-container>
   
             <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Task name</th>
+                <th mat-header-cell *matHeaderCellDef>Task name</th>
                 <td mat-cell *matCellDef="let element"><a [routerLink]="['/task', element.id]">{{element.name}}</a></td>
             </ng-container>
   
             <ng-container matColumnDef="timeLimit">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time Limit (s)</th>
+                <th mat-header-cell *matHeaderCellDef>Time Limit (s)</th>
                 <td mat-cell *matCellDef="let element">{{element.timeLimit / 1000.0}}</td>
             </ng-container>
             
             <ng-container matColumnDef="memoryLimit">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Memory Limit (MiB)</th>
+                <th mat-header-cell *matHeaderCellDef>Memory Limit (MiB)</th>
                 <td mat-cell *matCellDef="let element">{{element.memoryLimit / 1024.0 / 1024.0}}</td>
             </ng-container>
 
             <ng-container matColumnDef="user.username">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Created by</th>
+                <th mat-header-cell *matHeaderCellDef>Created by</th>
                 <td mat-cell *matCellDef="let element"><a [routerLink]="['/profile', element.user.id]">{{element.user.username}}</a></td>
             </ng-container>
 
             <ng-container matColumnDef="timeSubmitted">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Submitted at</th>
+                <th mat-header-cell *matHeaderCellDef>Submitted at</th>
                 <td mat-cell *matCellDef="let element">{{element.timeSubmitted | date: 'dd. MMM yyyy. HH:mm'}}</td>
             </ng-container>
   
@@ -80,53 +80,53 @@
             <tr mat-row *matRowDef="let row; columns: displayedSolvedTasksColumns;"></tr>
           </table>
   
-          <mat-paginator #solvedTasksPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+          <mat-paginator #solvedTasksPaginator [length]="solvedTasksTotalItems" [pageSize]="solvedTasksPageSize" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
         </mat-card>
       </mat-tab>
   
       <mat-tab label="Submissions">
         <mat-card class="tableWrapper">
-          <table id="submissions-table" #submissionTable="matSort" mat-table [dataSource]="submissionDataSource" matSort>
+          <table id="submissions-table" mat-table [dataSource]="userSubmissionsDataSource">
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <th mat-header-cell *matHeaderCellDef>ID</th>
                 <td mat-cell *matCellDef="let element">{{element.id}}</td>
             </ng-container>
   
             <ng-container matColumnDef="task.name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+                <th mat-header-cell *matHeaderCellDef>Task</th>
                 <td mat-cell *matCellDef="let element"><a [routerLink]="['/task', element.task.id]">{{element.task.name}}</a></td>
             </ng-container>
 
             <ng-container matColumnDef="computerLanguage.name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Language</th>
+                <th mat-header-cell *matHeaderCellDef>Language</th>
                 <td mat-cell *matCellDef="let element">{{element.computerLanguage.name}}</td>
             </ng-container>
   
             <ng-container matColumnDef="executionTime">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time (s)</th>
+                <th mat-header-cell *matHeaderCellDef>Time (s)</th>
                 <td mat-cell *matCellDef="let element">{{element.executionTime / 1000.0}}</td>
             </ng-container>
             
             <ng-container matColumnDef="executionMemory">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Memory (MiB)</th>
+                <th mat-header-cell *matHeaderCellDef>Memory (MiB)</th>
                 <td mat-cell *matCellDef="let element">{{element.executionMemory / 1024.0 / 1024.0}}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let element" class="highlight"><span [matTooltip]="element.status==='AC' ? 'Accepted' : (element.status==='RTE' ? 'Runtime Error' : (element.status==='WA' ? 'Wrong answer' : (element.status==='CE' ? 'Compilation Error' : (element.status==='MLE' ? 'Memory Limit Exceeded' : (element.status==='TLE' ? 'Time Limit Exceeded' : 'Undefined')))))">{{element.status}}</span></td>
             </ng-container>
 
             <ng-container matColumnDef="timeSubmitted">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Submitted at</th>
+                <th mat-header-cell *matHeaderCellDef>Submitted at</th>
                 <td mat-cell *matCellDef="let element">{{element.timeSubmitted | date: 'dd. MMM yyyy. HH:mm'}}</td>
             </ng-container>
   
-            <tr mat-header-row *matHeaderRowDef="displayedSubmissionColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedSubmissionColumns;" [ngClass]="{'accepted': row.status==='AC' }"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedUserSubmissionsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedUserSubmissionsColumns;" [ngClass]="{ 'accepted': row.status==='AC' }"></tr>
           </table>
   
-          <mat-paginator #submissionPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+          <mat-paginator #userSubmissionsPaginator [length]="userSubmissionsTotalItems" [pageSize]="userSubmissionsPageSize" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
         </mat-card>
   
       </mat-tab>
