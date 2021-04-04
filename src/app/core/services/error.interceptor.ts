@@ -15,9 +15,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            let error = err.status + " " + err.statusText;
-            if (err.error && 'message' in err.error) {
-                error = err.error.message;
+            let errorMessage: string = err.status + " " + err.statusText;
+            if (err.error && typeof err.error === 'object' && err.error !== null && 'message' in err.error) {
+                errorMessage = err.error.message;
+            } else if (err.name) {
+                errorMessage += ' ' + err.name;
             }
 
             if (err.status === 401) {
@@ -28,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 });
             }
             
-            this.alertService.error(error, true);
+            this.alertService.error(errorMessage, true);
 
             return throwError(err);
         }));
