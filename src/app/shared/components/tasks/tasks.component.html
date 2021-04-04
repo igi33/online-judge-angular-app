@@ -9,7 +9,7 @@
         </div>
     </mat-sidenav>
 
-    <mat-sidenav-content class="main-content" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" (scrolled)="loadMoreTasks()">
+    <mat-sidenav-content class="main-content" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreTasks()">
         <div class="tasks-wrapper">
             <mat-card *ngFor="let task of tasks" class="task-info">
                 <mat-card-content class="content">
@@ -17,8 +17,8 @@
                         <h3 class="task-name"><a [routerLink]="['/task', task.id]">{{task.name}}</a></h3>
                         <div class="date">
                             <mat-icon>access_time</mat-icon>
-                            <span>{{this.getDate(task.timeSubmitted) | date:'mediumDate'}}</span>
-                            <span class="timeDate">{{this.getDate(task.timeSubmitted) | date:'HH:mm'}}</span>
+                            <span>{{ task.timeSubmitted | date:'mediumDate' }}</span>
+                            <span class="timeDate">{{ task.timeSubmitted | date:'HH:mm' }}</span>
                         </div>
                     </div>
                 </mat-card-content>
@@ -30,6 +30,7 @@
                     <a class="view-task" mat-button [routerLink]="['/task', task.id]">View Task</a>
                 </mat-card-actions>
             </mat-card>
+            <div *ngIf="tasks.length == 0">There are no tasks to show.</div>
         </div>
 
     </mat-sidenav-content>

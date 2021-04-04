@@ -1,5 +1,4 @@
-import { Component, OnInit, NgZone, ViewChildren, QueryList } from '@angular/core';
-import { ScrollDispatcher } from '@angular/cdk/overlay';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Tag } from '../../models/tag';
 import { TaskService } from 'src/app/core/services/task.service';
 import { TagService } from 'src/app/core/services/tag.service';
@@ -14,8 +13,8 @@ import { Task } from '../../models/Task';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
-  page: number = 1;
-  pageSize: number = 10;
+  page: number = 0;
+  pageSize: number = 12;
   tags: Tag[] = [];
   tagId: number = 0;
   mode: string = 'side';
@@ -26,7 +25,6 @@ export class TasksComponent implements OnInit {
     private taskService: TaskService,
     private tagService: TagService,
     public breakpointObserver: BreakpointObserver,
-    public scroll: ScrollDispatcher
   ) {}
 
   ngOnInit() {
@@ -59,17 +57,15 @@ export class TasksComponent implements OnInit {
 
   public loadMoreTasks(reload: boolean = false) {
     if (reload) {
-      this.page = 1;
+      this.page = 0;
       this.tasks = [];
     }
-    this.taskService.getTasks(this.tagId/*, this.pageSize, (this.page - 1)*this.pageSize*/)
+    this.taskService.getTasks(this.tagId, this.pageSize, this.page * this.pageSize)
       .subscribe({
         next: data => {
           if (data.length > 0) {
             ++this.page;
-            for (let task of data) {
-              this.tasks.push(task);
-            }
+            this.tasks.push(...data);
           }
         }
     });
@@ -78,9 +74,5 @@ export class TasksComponent implements OnInit {
   public setTag(tagId: number): void {
     this.tagId = tagId;
     this.loadMoreTasks(true);
-  }
-
-  private getDate(date: string) {
-    return new Date(date);
   }
 }
